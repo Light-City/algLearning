@@ -179,3 +179,68 @@ public:
     
 };
 ```
+
+[524. 通过删除字母匹配到字典里最长单词](https://leetcode-cn.com/problems/longest-word-in-dictionary-through-deleting/)
+
+```cpp
+class Solution {
+public:
+    string findLongestWord(string s, vector<string>& d) {
+
+        vector<string> x;
+        for (const auto& e : d) {
+            int j = 0;
+            for (int i = 0; i < s.size(); i++) {
+                if (s[i] == e[j])
+                    j++;
+            }
+            if (j == e.size()) {
+                x.push_back(e);
+            }
+        }
+        sort(x.begin(), x.end(), [](const auto& first, const auto& second) {
+            return (first.size() > second.size()) || (first.size() == second.size() && first < second);
+        });
+        return x.size() == 0 ? "" : x[0];
+    }
+};
+```
+
+[386. 最多有k个不同字符的最长子字符串
+](https://www.lintcode.com/problem/longest-substring-with-at-most-k-distinct-characters/description?utm_source=sc-bky-sz0904)
+
+```cpp
+class Solution {
+public:
+    /**
+     * @param s: A string
+     * @param k: An integer
+     * @return: An integer
+     */
+    int lengthOfLongestSubstringKDistinct(string &s, int k) {
+        // write your code here
+        unordered_map<char, int> um;
+        
+        if (k == 0) return 0;
+        
+        int l = 0, r = 0, maxLen = 0, len = 0;
+        
+        while (r < s.size()) {
+            int c = s[r++];
+            if (um[c] == 0) len++;
+            um[c]++;
+
+            while (len > k) {
+                int d = s[l++];
+                um[d]--;
+                if (!um[d]) {
+                    len--;
+                }
+            }
+            maxLen = max(maxLen, r - l);
+        }
+        
+        return maxLen;
+    }
+};
+```
