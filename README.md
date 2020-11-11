@@ -159,3 +159,23 @@ public:
     }
 };
 ```
+
+[680. 验证回文字符串 Ⅱ](https://leetcode-cn.com/problems/valid-palindrome-ii/)
+
+```cpp
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        int i=0, j = s.size()-1;
+        for (; i < j && s[i] == s[j]; i++, j--); 
+        return  dfs(s, i+1, j) || dfs(s, i, j-1);
+    }
+
+    bool dfs(const string& s, int i, int j) {
+        for ( ; i < j && s[i] == s[j]; ++i, --j);
+        return i >= j;
+    }
+
+    
+};
+```
