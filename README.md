@@ -79,3 +79,83 @@ public:
     }
 };
 ```
+
+[76. 最小覆盖子串](https://leetcode-cn.com/problems/minimum-window-substring/)
+
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char,int> src;
+
+        for (auto c : t) {
+            src[c]++;
+        }
+        unordered_map<char,int> tg;
+        int l = 0, r = 0, len = 0;
+
+        int left = 0, minLen = s.size() + 1;
+        while (r < s.size()) {
+            char c = s[r++];
+            if (src.count(c)) {
+                tg[c]++;
+                if (src[c] == tg[c]) {
+                    len++;
+                }
+            }
+            while (len == src.size()) {
+                if (r-l<minLen) {
+                    left = l;
+                    minLen = r-l;
+                }
+                char c =  s[l++];
+                if (src.count(c)) {
+                    if (src[c] == tg[c]) len--;
+                    tg[c]--;
+                }
+            }
+        }
+        return minLen == s.size()+1 ? "" : s.substr(left, minLen);
+    }
+};
+```
+
+[680. 验证回文字符串](https://leetcode-cn.com/problems/valid-palindrome-ii/)
+
+解法1：双指针
+
+```cpp
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        int end = sqrt(c);
+
+        int start = 0;
+        while (start <= end) {
+            if (start*start == c-end*end) {
+                return true;
+            } else if (start*start < c-end*end) {
+                start++;
+            } else if (start*start > c-end*end) {
+                end--;
+            }
+        }
+        return false;
+    }
+};
+```
+解法2：直接遍历
+
+```cpp
+class Solution {
+public:
+    bool judgeSquareSum(int c) {  
+        for (long i = 0; i*i<=c && i <= c ; i++) {
+            double target = sqrt(c-i*i);
+            if (target == int(target)) return true;
+        }
+        return false;
+    }
+};
+```
